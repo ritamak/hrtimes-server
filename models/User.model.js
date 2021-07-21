@@ -28,7 +28,7 @@ const userSchema = new Schema({
     required: true,
   },
   image: String,
-  password: {
+  passwordHash: {
     type: String,
     required: true,
   },
