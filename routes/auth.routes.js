@@ -14,6 +14,7 @@ router.post("/signup", (req, res) => {
     image,
     password,
   } = req.body;
+  
   if (
     !username ||
     !email ||
@@ -23,20 +24,26 @@ router.post("/signup", (req, res) => {
     !city ||
     !country
   ) {
+
     res.status(500).json({
       errorMessage: "Please enter all fields",
     });
+
     return;
   }
+
   const myRegex = new RegExp(
     /^[a-z0-9](?!.*?[^\na-z0-9]{2})[^\s@]+@[^\s@]+\.[^\s@]+[a-z0-9]$/
   );
+
   if (!myRegex.test(email)) {
     res.status(500).json({
       errorMessage: "Email format not correct",
     });
+
     return;
   }
+
   const myPassRegex = new RegExp(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
   );
@@ -50,6 +57,7 @@ router.post("/signup", (req, res) => {
 
   let salt = bcrypt.genSaltSync(10);
   let hash = bcrypt.hashSync(password, salt);
+  
   UserModel.create({
     username,
     firstName,
