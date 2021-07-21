@@ -12,12 +12,12 @@ router.post("/signup", (req, res) => {
     country,
     city,
     image,
-    password,
+    passwordHash,
   } = req.body;
   if (
     !username ||
     !email ||
-    !password ||
+    !passwordHash ||
     !firstName ||
     !lastName ||
     !city ||
@@ -40,7 +40,7 @@ router.post("/signup", (req, res) => {
   const myPassRegex = new RegExp(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
   );
-  if (!myPassRegex.test(password)) {
+  if (!myPassRegex.test(passwordHash)) {
     res.status(500).json({
       errorMessage:
         "Password needs to have 8 characters, a number and an Uppercase alphabet",
@@ -49,7 +49,7 @@ router.post("/signup", (req, res) => {
   }
 
   let salt = bcrypt.genSaltSync(10);
-  let hash = bcrypt.hashSync(password, salt);
+  let hash = bcrypt.hashSync(passwordHash, salt);
   UserModel.create({
     username,
     firstName,
