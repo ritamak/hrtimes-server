@@ -30,3 +30,5 @@ app.use("/api", authRoutes);
 require("./error-handling")(app);
 
 module.exports = app;
+
+// This is for testing purposes!!!
