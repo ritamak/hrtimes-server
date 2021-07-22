@@ -13,6 +13,7 @@ router.post("/signup", (req, res) => {
     city,
     image,
     passwordHash,
+    interests,
   } = req.body;
   
   if (
@@ -22,7 +23,8 @@ router.post("/signup", (req, res) => {
     !firstName ||
     !lastName ||
     !city ||
-    !country
+    !country ||
+    !interests
   ) {
 
     res.status(500).json({
@@ -67,6 +69,7 @@ router.post("/signup", (req, res) => {
     city,
     image,
     passwordHash: hash,
+    interests,
   })
     .then((user) => {
       user.passwordHash = "***";
