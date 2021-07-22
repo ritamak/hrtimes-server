@@ -33,6 +33,9 @@ app.use("/api", fetchRoutes);
 const profileRoutes = require("./routes/profile.routes");
 app.use("/api", profileRoutes);
 
+const articleRoutes = require("./routes/article.routes");
+app.use("api", articleRoutes);
+
 require("./error-handling")(app);
 
 module.exports = app;
