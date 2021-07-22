@@ -27,6 +27,9 @@ app.use("/api", allRoutes);
 const authRoutes = require("./routes/auth.routes");
 app.use("/api", authRoutes);
 
+const fetchRoutes = require('./routes/news.routes');
+app.use("/api", fetchRoutes);
+
 require("./error-handling")(app);
 
 module.exports = app;
