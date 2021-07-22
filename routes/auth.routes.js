@@ -148,7 +148,7 @@ const isLoggedIn = (req, res, next) => {
   }
 };
 
-router.get("/profile", (req, res, next) => {
+router.get("/profile", isLoggedIn, (req, res, next) => {
   res.status(200).json(req.session.loggedInUser);
 });
 

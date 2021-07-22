@@ -32,7 +32,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  interests: Array,
+  interests: {
+    type: Array,
+    required: true,
+  },
 });
 
 const User = model("User", userSchema);
