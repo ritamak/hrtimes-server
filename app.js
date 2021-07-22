@@ -27,8 +27,11 @@ app.use("/api", allRoutes);
 const authRoutes = require("./routes/auth.routes");
 app.use("/api", authRoutes);
 
-const fetchRoutes = require('./routes/news.routes');
+const fetchRoutes = require("./routes/news.routes");
 app.use("/api", fetchRoutes);
+
+const profileRoutes = require("./routes/profile.routes");
+app.use("/api", profileRoutes);
 
 require("./error-handling")(app);
 
