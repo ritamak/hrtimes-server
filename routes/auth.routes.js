@@ -32,31 +32,32 @@ router.post("/signup", (req, res) => {
     return;
   }
 
-  const myRegex = new RegExp(
-    /^[a-z0-9](?!.*?[^\na-z0-9]{2})[^\s@]+@[^\s@]+\.[^\s@]+[a-z0-9]$/
-  );
+  // const myRegex = new RegExp(
+  //   /^[a-z0-9](?!.*?[^\na-z0-9]{2})[^\s@]+@[^\s@]+\.[^\s@]+[a-z0-9]$/
+  // );
 
-  if (!myRegex.test(email)) {
-    res.status(500).json({
-      errorMessage: "Email format not correct",
-    });
+  // if (!myRegex.test(email)) {
+  //   res.status(500).json({
+  //     errorMessage: "Email format not correct",
+  //   });
 
-    return;
-  }
+  //   return;
+  // }
 
-  const myPassRegex = new RegExp(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
-  );
-  if (!myPassRegex.test(passwordHash)) {
-    res.status(500).json({
-      errorMessage:
-        "Password needs to have 8 characters, a number and an Uppercase alphabet",
-    });
-    return;
-  }
+  // const myPassRegex = new RegExp(
+  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
+  // );
+  // if (!myPassRegex.test(passwordHash)) {
+  //   res.status(500).json({
+  //     errorMessage:
+  //       "Password needs to have 8 characters, a number and an Uppercase alphabet",
+  //   });
+  //   return;
+  // }
 
   let salt = bcrypt.genSaltSync(10);
   let hash = bcrypt.hashSync(passwordHash, salt);
+  
   UserModel.create({
     username,
     firstName,
@@ -94,15 +95,16 @@ router.post("/signin", (req, res) => {
     });
     return;
   }
-  const myRegex = new RegExp(
-    /^[a-z0-9](?!.*?[^\na-z0-9]{2})[^\s@]+@[^\s@]+\.[^\s@]+[a-z0-9]$/
-  );
-  if (!myRegex.test(email)) {
-    res.status(500).json({
-      error: "Email format not correct",
-    });
-    return;
-  }
+
+  // const myRegex = new RegExp(
+  //   /^[a-z0-9](?!.*?[^\na-z0-9]{2})[^\s@]+@[^\s@]+\.[^\s@]+[a-z0-9]$/
+  // );
+  // if (!myRegex.test(email)) {
+  //   res.status(500).json({
+  //     error: "Email format not correct",
+  //   });
+  //   return;
+  // }
 
   UserModel.findOne({ email })
     .then((userData) => {
