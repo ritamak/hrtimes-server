@@ -32,6 +32,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  interests: Array,
 });
 
 const User = model("User", userSchema);

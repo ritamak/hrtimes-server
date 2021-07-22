@@ -13,6 +13,7 @@ router.post("/signup", (req, res) => {
     city,
     image,
     passwordHash,
+    interests,
   } = req.body;
   if (
     !username ||
@@ -21,7 +22,8 @@ router.post("/signup", (req, res) => {
     !firstName ||
     !lastName ||
     !city ||
-    !country
+    !country ||
+    !interests
   ) {
     res.status(500).json({
       errorMessage: "Please enter all fields",
@@ -59,6 +61,7 @@ router.post("/signup", (req, res) => {
     city,
     image,
     passwordHash: hash,
+    interests,
   })
     .then((user) => {
       user.passwordHash = "***";
