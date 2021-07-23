@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-//const bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 const UserModel = require("../models/User.model");
 
 router.get("/:id/edit", (req, res) => {
@@ -33,6 +33,10 @@ router.patch("/:id/edit", (req, res) => {
     passwordHash,
     interests,
   } = req.body;
+
+  let salt = bcrypt.genSaltSync(10);
+  let hash = bcrypt.hashSync(passwordHash, salt);
+
   UserModel.findByIdAndUpdate(
     id,
     {
@@ -44,7 +48,7 @@ router.patch("/:id/edit", (req, res) => {
         country: country,
         city: city,
         image: image,
-        passwordHash: passwordHash,
+        passwordHash: hash,
         interests: interests,
       },
     },
