@@ -14,6 +14,7 @@ router.post("/signup", (req, res) => {
     image,
     passwordHash,
     interests,
+    comments,
   } = req.body;
 
   if (
@@ -69,6 +70,7 @@ router.post("/signup", (req, res) => {
     image,
     passwordHash: hash,
     interests,
+    comments,
   })
     .then((user) => {
       user.passwordHash = "***";
@@ -157,7 +159,21 @@ const isLoggedIn = (req, res, next) => {
 };
 
 router.get("/profile", isLoggedIn, (req, res, next) => {
+<<<<<<< HEAD
+  UserModel.findById(req.session.loggedInUser._id)
+    .populate("comments")
+
+    .then(() => {
+      console.log("router get for profile works");
+      console.log(req.session.loggedInUser);
+      res.status(200).json(req.session.loggedInUser);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+=======
   res.status(200).json(req.session.loggedInUser);
+>>>>>>> c66f4ff7a248b3ceb30ad9d7c0e5f3112372162d
 });
 
 module.exports = router;
