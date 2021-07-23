@@ -159,8 +159,15 @@ const isLoggedIn = (req, res, next) => {
 };
 
 router.get("/profile", isLoggedIn, (req, res, next) => {
-  console.log("router get for profile works");
-  res.status(200).json(req.session.loggedInUser);
+  UserModel.findById(req.params.id)
+    .populate("comments")
+    .then(() => {
+      console.log("router get for profile works");
+      res.status(200).json(req.session.loggedInUser);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 module.exports = router;
