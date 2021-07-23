@@ -34,7 +34,7 @@ const profileRoutes = require("./routes/editProfile.routes");
 app.use("/api", profileRoutes);
 
 const articleRoutes = require("./routes/article.routes");
-app.use("api", articleRoutes);
+app.use("/api", articleRoutes);
 
 require("./error-handling")(app);
 
