@@ -1,11 +1,11 @@
 const router = require("express").Router();
-const ArticleModel = require("../models/Article.model");
+const CommentModel = require("../models/Comment.model");
 
-router.get("/articles", (req, res) => {
-  ArticleModel.find()
-    .then((articles) => {
-      res.status(200).json(articles);
-      console.log("get for articles works");
+router.get("/comments", (req, res) => {
+  CommentModel.find()
+    .then((comments) => {
+      res.status(200).json(comments);
+      console.log("get for comments works");
     })
     .catch((err) => {
       res.status(500).json({
@@ -15,9 +15,27 @@ router.get("/articles", (req, res) => {
     });
 });
 
-router.get("/article/:id", (req, res) => {
-  console.log(req.params);
-  ArticleModel.findById(req.params.id)
+router.get("/comments/:id", (req, res) => {
+  CommentModel.findById(req.params.id)
+    .then((response) => {
+      res.status(200).json(response);
+      console.log(response);
+      console.log("Get for comment find by ID works");
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: "Something went wrong",
+        message: err,
+      });
+    });
+});
+
+router.post("/comments/create", (req, res, next) => {
+  const { commentBody } = req.body;
+  console.log(req.body);
+  CommentModel.create({
+    commentBody: commentBody,
+  })
     .then((response) => {
       res.status(200).json(response);
       console.log(response);
@@ -30,32 +48,11 @@ router.get("/article/:id", (req, res) => {
     });
 });
 
-router.post("/create", (req, res, next) => {
-  const { section, subsection, title, body, created_date, author } = req.body;
-  console.log(req.body);
-  ArticleModel.create({
-    section: section,
-    subsection: subsection,
-    title: title,
-    body: body,
-    created_date: created_date,
-    author: author,
-  })
+router.delete("/comments/:id", (req, res) => {
+  CommentModel.findByIdAndDelete(req.params.id)
     .then((response) => {
       res.status(200).json(response);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        error: "Something went wrong",
-        message: err,
-      });
-    });
-});
-
-router.delete("/article/:id", (req, res) => {
-  ArticleModel.findByIdAndDelete(req.params.id)
-    .then((response) => {
-      res.status(200).json(response);
+      console.log(response);
     })
     .catch((err) => {
       res.status(500).json({

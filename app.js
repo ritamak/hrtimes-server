@@ -36,6 +36,9 @@ app.use("/api", profileRoutes);
 const articleRoutes = require("./routes/article.routes");
 app.use("/api", articleRoutes);
 
+const commentRoutes = require("./routes/comment.routes");
+app.use("/api", commentRoutes);
+
 require("./error-handling")(app);
 
 module.exports = app;

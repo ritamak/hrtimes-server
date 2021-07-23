@@ -14,6 +14,7 @@ router.post("/signup", (req, res) => {
     image,
     passwordHash,
     interests,
+    comments,
   } = req.body;
 
   if (
@@ -69,6 +70,7 @@ router.post("/signup", (req, res) => {
     image,
     passwordHash: hash,
     interests,
+    comments,
   })
     .then((user) => {
       user.passwordHash = "***";
