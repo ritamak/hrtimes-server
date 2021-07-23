@@ -15,7 +15,7 @@ router.post("/signup", (req, res) => {
     passwordHash,
     interests,
   } = req.body;
-  
+
   if (
     !username ||
     !email ||
@@ -26,7 +26,6 @@ router.post("/signup", (req, res) => {
     !country ||
     !interests
   ) {
-
     res.status(500).json({
       errorMessage: "Please enter all fields",
     });
@@ -59,7 +58,7 @@ router.post("/signup", (req, res) => {
 
   let salt = bcrypt.genSaltSync(10);
   let hash = bcrypt.hashSync(passwordHash, salt);
-  
+
   UserModel.create({
     username,
     firstName,
@@ -158,6 +157,7 @@ const isLoggedIn = (req, res, next) => {
 };
 
 router.get("/profile", isLoggedIn, (req, res, next) => {
+  console.log("router get for profile works");
   res.status(200).json(req.session.loggedInUser);
 });
 

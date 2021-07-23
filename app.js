@@ -30,7 +30,7 @@ app.use("/api", authRoutes);
 const fetchRoutes = require("./routes/news.routes");
 app.use("/api", fetchRoutes);
 
-const profileRoutes = require("./routes/profile.routes");
+const profileRoutes = require("./routes/editProfile.routes");
 app.use("/api", profileRoutes);
 
 const articleRoutes = require("./routes/article.routes");

@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcryptjs");
+//const bcrypt = require("bcryptjs");
 const UserModel = require("../models/User.model");
 
 router.get("/:id", (req, res) => {
   UserModel.findById(req.params.todoId)
     .then((response) => {
+      console.log("router get for edit profile working");
       res.status(200).json(response);
     })
     .catch((err) => {
@@ -25,6 +26,7 @@ router.patch("/:id", (req, res) => {
     email,
     country,
     city,
+    image,
     passwordHash,
     interests,
   } = req.body;
@@ -38,6 +40,7 @@ router.patch("/:id", (req, res) => {
         email: email,
         country: country,
         city: city,
+        image: image,
         passwordHash: passwordHash,
         interests: interests,
       },
