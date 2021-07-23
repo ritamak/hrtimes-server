@@ -50,5 +50,20 @@ router.get('/article/:id', (req, res) => {
     }) 
 })
 
+router.patch('/article/:id/edit', (req, res) => {
+  let id = req.params.id
+  const {name, description, completed, image} = req.body;
+  TodoModel.findByIdAndUpdate(id, {$set: {name: name, description: description, completed: completed, image: image}}, {new: true})
+    .then((response) => {
+      res.status(200).json(response)
+    })
+    .catch((err) => {
+      console.log(err)
+      res.status(500).json({
+        error: 'Something went wrong',
+        message: err
+      })
+    }) 
+})
 
 module.exports = router;
