@@ -157,7 +157,6 @@ const isLoggedIn = (req, res, next) => {
 };
 
 router.get("/profile", isLoggedIn, (req, res, next) => {
-  console.log("router get for profile works");
   res.status(200).json(req.session.loggedInUser);
 });
 

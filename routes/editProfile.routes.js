@@ -3,7 +3,7 @@ const router = express.Router();
 //const bcrypt = require("bcryptjs");
 const UserModel = require("../models/User.model");
 
-router.get("/:id", (req, res) => {
+router.get("/:id/edit", (req, res) => {
   UserModel.findById(req.params.todoId)
     .then((response) => {
       console.log("router get for edit profile working");
@@ -17,7 +17,7 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.patch("/:id", (req, res) => {
+router.patch("/:id/edit", (req, res) => {
   let id = req.params.id;
   const {
     username,
