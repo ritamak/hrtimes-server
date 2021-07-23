@@ -2,9 +2,31 @@ const router = require("express").Router();
 const axios = require("axios");
 const ArticleModel = require("../models/Article.model");
 
-router.get("/create", (req, res, next) => {
-  console.log("router get for create article works");
-  res.status(200).json(req.session.loggedInUser);
+router.get("/articles", (req, res) => {
+  ArticleModel.find()
+    .then((articles) => {
+      res.status(200).json(articles);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: "Something went wrong",
+        message: err,
+      });
+    });
+});
+
+router.get("/article/:id", (req, res) => {
+  ArticleModel.findById(req.params.id)
+    .then((response) => {
+      res.status(200).json(response);
+      console.log(response);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: "Something went wrong",
+        message: err,
+      });
+    });
 });
 
 router.post("/create", (req, res, next) => {
