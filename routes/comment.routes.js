@@ -33,7 +33,7 @@ router.get("/comments/:id", (req, res) => {
 
 router.post("/comments/create", (req, res, next) => {
   const { commentBody, authorId, author } = req.body;
-  console.log(req.body);
+  console.log("this is console for req.body", req.body);
   CommentModel.create({
     commentBody: commentBody,
     authorId: authorId,
@@ -41,13 +41,16 @@ router.post("/comments/create", (req, res, next) => {
   })
     .then((response) => {
       res.status(200).json(response);
-      console.log(response);
-      CommentModel.findOne({ _id: req.body._id })
+      console.log("this is response.data", response.data);
+      console.log("this is console for response", response);
+      CommentModel.findOne({
+        _id: req.body._id,
+      })
         .then((comment) => {
           if (!comment) {
             CommentModel.create(req.body).then((newComment) => {
               UserModel.findByIdAndUpdate(req.body.authorId, {
-                $push: { comments: newComment._id },
+                $push: { comments: response },
               }).then(() => {
                 console.log("comment created");
               });
@@ -57,7 +60,9 @@ router.post("/comments/create", (req, res, next) => {
               if (user.comments.includes(comment._id)) {
                 console.log("comment already in the user comments");
               } else {
-                UserModel.findByIdAndUpdate(req.body.authorId).then(() => {
+                UserModel.findByIdAndUpdate(req.body.authorId, {
+                  $push: { comments: response },
+                }).then(() => {
                   console.log("added comment to user comments");
                 });
               }

@@ -36,7 +36,7 @@ const userSchema = new Schema({
     type: Array,
     required: true,
   },
-  comments: Array,
+  comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
 });
 
 const User = model("User", userSchema);
