@@ -37,4 +37,18 @@ router.delete("/article/:id", (req, res) => {
     });
 });
 
+router.get('/article/:id', (req, res) => {
+  ArticleModel.findById(req.params.id)
+    .then((response) => {
+        res.status(200).json(response)
+    })
+    .catch((err) => {
+      res.status(500).json({
+          error: 'Something went wrong',
+          message: err
+      })
+    }) 
+})
+
+
 module.exports = router;

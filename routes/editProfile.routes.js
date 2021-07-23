@@ -4,13 +4,9 @@ const bcrypt = require("bcryptjs");
 const UserModel = require("../models/User.model");
 
 router.get("/:id/edit", (req, res) => {
-<<<<<<< HEAD
-  UserModel.findById(req.params.todoId)
-=======
   console.log(req.params);
 
   UserModel.findById(req.params.id)
->>>>>>> 03f2ae3f4838a6e55e0ddfb2306a1b08b767089f
     .then((response) => {
       console.log("router get for edit profile working");
       res.status(200).json(response);
