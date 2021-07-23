@@ -6,6 +6,7 @@ router.get("/articles", (req, res) => {
   ArticleModel.find()
     .then((articles) => {
       res.status(200).json(articles);
+      console.log("get for articles works");
     })
     .catch((err) => {
       res.status(500).json({
@@ -16,6 +17,7 @@ router.get("/articles", (req, res) => {
 });
 
 router.get("/article/:id", (req, res) => {
+  console.log(req.params);
   ArticleModel.findById(req.params.id)
     .then((response) => {
       res.status(200).json(response);
