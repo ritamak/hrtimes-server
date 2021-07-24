@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const Article = require("../models/Article.model");
 const ArticleModel = require("../models/Article.model");
 
 router.get("/articles", (req, res) => {
@@ -78,5 +79,20 @@ router.get('/article/:id', (req, res) => {
     }) 
 })
 
+router.patch('/article/:id/edit', (req, res) => {
+  let id = req.params.id
+  const {section, subsection, title, body, created_date, author} = req.body;
+  ArticleModel.findByIdAndUpdate(id, {$set: {section, subsection, title, body, created_date, author}}, {new: true})
+    .then((response) => {
+      res.status(200).json(response)
+    })
+    .catch((err) => {
+      console.log(err)
+      res.status(500).json({
+        error: 'Something went wrong',
+        message: err
+      })
+    }) 
+})
 
 module.exports = router;
