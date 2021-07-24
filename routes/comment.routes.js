@@ -44,24 +44,26 @@ router.post("/comments/create", (req, res, next) => {
         .then((comment) => {
           if (!comment) {
             CommentModel.create(req.body).then((newComment) => {
-              UserModel.findByIdAndUpdate(req.body.authorId, {
-                $push: { comments: response._id },
+              UserModel.findByIdAndUpdate(req.session.loggedInUser._id, {
+                $push: { comments: newComment._id },
               }).then(() => {
                 console.log("comment created");
               });
             });
           } else {
-            UserModel.findByIdAndUpdate(req.body.authorId).then((user) => {
-              if (user.comments.includes(comment._id)) {
-                console.log("comment already in the user comments");
-              } else {
-                UserModel.findByIdAndUpdate(req.body.authorId, {
-                  $push: { comments: response._id },
-                }).then(() => {
-                  console.log("added comment to user comments");
-                });
+            UserModel.findByIdAndUpdate(req.session.loggedInUser._id).then(
+              (user) => {
+                if (user.comments.includes(comment._id)) {
+                  console.log("comment already in the user comments");
+                } else {
+                  UserModel.findByIdAndUpdate(req.session.loggedInUser._id, {
+                    $push: { comments: comment._id },
+                  }).then(() => {
+                    console.log("added comment to user comments");
+                  });
+                }
               }
-            });
+            );
           }
         })
         .catch((err) => {
@@ -89,34 +91,4 @@ router.delete("/comments/:id", (req, res) => {
     });
 });
 
-/*
-router.post("/commentToUser"),
-  (req, res, next) => {
-    CommentModel.findOne({ _id: req.body._id })
-      .then((comment) => {
-        if (!comment) {
-          CommentModel.create(req.body).then((newComment) => {
-            UserModel.findByIdAndUpdate(req.body.authorId, {
-              $push: { comments: newComment._id },
-            }).then(() => {
-              console.log("comment created");
-            });
-          });
-        } else {
-          UserModel.findByIdAndUpdate(req.body.authorId).then((user) => {
-            if (user.comments.includes(comment._id)) {
-              console.log("comment already in the user comments");
-            } else {
-              UserModel.findByIdAndUpdate(req.body.authorId).then(() => {
-                console.log("added comment to user comments");
-              });
-            }
-          });
-        }
-      })
-      .catch((err) => {
-        console.log("something failed ", err);
-      });
-  };
-*/
 module.exports = router;

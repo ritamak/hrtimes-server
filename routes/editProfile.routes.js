@@ -3,20 +3,6 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const UserModel = require("../models/User.model");
 
-router.get("/:id/edit", (req, res) => {
-  UserModel.findById(req.params.id)
-    .populate("comments")
-    .then((response) => {
-      res.status(200).json(response);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        error: "Something went wrong",
-        message: err,
-      });
-    });
-});
-
 router.patch("/:id/edit", (req, res) => {
   let id = req.params.id;
   const {
