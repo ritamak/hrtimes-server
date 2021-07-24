@@ -39,6 +39,9 @@ app.use("/api", articleRoutes);
 const commentRoutes = require("./routes/comment.routes");
 app.use("/api", commentRoutes);
 
+const fileUploadRoutes = require("./routes/file-upload.routes");
+app.use("/api", fileUploadRoutes);
+
 require("./error-handling")(app);
 
 module.exports = app;
