@@ -4,12 +4,10 @@ const bcrypt = require("bcryptjs");
 const UserModel = require("../models/User.model");
 
 router.get("/:id/edit", (req, res) => {
-  console.log(req.params);
   UserModel.findById(req.params.id)
+    .populate("comments")
     .then((response) => {
-      console.log("router get for edit profile working");
       res.status(200).json(response);
-      console.log(response);
     })
     .catch((err) => {
       res.status(500).json({
@@ -57,7 +55,6 @@ router.patch("/:id/edit", (req, res) => {
       res.status(200).json(response);
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).json({
         error: "Something went wrong",
         message: err,

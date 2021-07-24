@@ -20,8 +20,6 @@ router.get("/comments/:id", (req, res) => {
   CommentModel.findById(req.params.id)
     .then((response) => {
       res.status(200).json(response);
-      console.log(response);
-      console.log("Get for comment find by ID works");
     })
     .catch((err) => {
       res.status(500).json({
@@ -33,7 +31,6 @@ router.get("/comments/:id", (req, res) => {
 
 router.post("/comments/create", (req, res, next) => {
   const { commentBody, authorId, author } = req.body;
-  console.log("this is console for req.body", req.body);
   CommentModel.create({
     commentBody: commentBody,
     authorId: authorId,
@@ -41,8 +38,6 @@ router.post("/comments/create", (req, res, next) => {
   })
     .then((response) => {
       res.status(200).json(response);
-      console.log("this is response.data", response.data);
-      console.log("this is console for response", response);
       CommentModel.findOne({
         _id: req.body._id,
       })
@@ -50,7 +45,7 @@ router.post("/comments/create", (req, res, next) => {
           if (!comment) {
             CommentModel.create(req.body).then((newComment) => {
               UserModel.findByIdAndUpdate(req.body.authorId, {
-                $push: { comments: response },
+                $push: { comments: response._id },
               }).then(() => {
                 console.log("comment created");
               });
@@ -61,7 +56,7 @@ router.post("/comments/create", (req, res, next) => {
                 console.log("comment already in the user comments");
               } else {
                 UserModel.findByIdAndUpdate(req.body.authorId, {
-                  $push: { comments: response },
+                  $push: { comments: response._id },
                 }).then(() => {
                   console.log("added comment to user comments");
                 });
@@ -85,7 +80,6 @@ router.delete("/comments/:id", (req, res) => {
   CommentModel.findByIdAndDelete(req.params.id)
     .then((response) => {
       res.status(200).json(response);
-      console.log(response);
     })
     .catch((err) => {
       res.status(500).json({

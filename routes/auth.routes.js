@@ -160,11 +160,7 @@ const isLoggedIn = (req, res, next) => {
 
 router.get("/profile", isLoggedIn, (req, res, next) => {
   UserModel.findById(req.session.loggedInUser._id)
-    .populate("comments")
-
     .then(() => {
-      console.log("router get for profile works");
-      console.log(req.session.loggedInUser);
       res.status(200).json(req.session.loggedInUser);
     })
     .catch((err) => {
