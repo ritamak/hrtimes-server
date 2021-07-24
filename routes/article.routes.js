@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const Article = require("../models/Article.model");
 const ArticleModel = require("../models/Article.model");
+const UserModel = require("../models/User.model");
 
 router.get("/articles", (req, res) => {
   ArticleModel.find()
@@ -37,16 +37,18 @@ router.post("/create", (req, res, next) => {
     body: body,
     created_date: created_date,
     author: author,
-  })
-    .then((response) => {
-      res.status(200).json(response);
+  }).then((response) => {
+    res.status(200).json(response);
+    UserModel.findByIdAndUpdate(req.session.loggedInUser._id, {
+      $push: { articles: response._id },
     })
-    .catch((err) => {
-      res.status(500).json({
-        error: "Something went wrong",
-        message: err,
+      .then(() => {
+        console.log("article added to user");
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    });
+  });
 });
 
 router.delete("/article/:id", (req, res) => {

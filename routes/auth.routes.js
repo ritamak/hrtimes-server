@@ -15,6 +15,7 @@ router.post("/signup", (req, res) => {
     passwordHash,
     interests,
     comments,
+    articles,
   } = req.body;
 
   if (
@@ -71,6 +72,7 @@ router.post("/signup", (req, res) => {
     passwordHash: hash,
     interests,
     comments,
+    articles,
   })
     .then((user) => {
       user.passwordHash = "***";
@@ -161,6 +163,10 @@ const isLoggedIn = (req, res, next) => {
 router.get("/profile", isLoggedIn, (req, res, next) => {
   UserModel.findById(req.session.loggedInUser._id)
     .populate("comments")
+<<<<<<< HEAD
+=======
+    .populate("articles")
+>>>>>>> d3ef100840927ab81e4d04ba99b112b179039466
     .then((response) => {
       res.status(200).json(response);
     })
