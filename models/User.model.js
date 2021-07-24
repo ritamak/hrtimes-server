@@ -36,6 +36,7 @@ const userSchema = new Schema({
     type: Array,
     required: true,
   },
+  articles: [{ type: Schema.Types.ObjectId, ref: "Article" }],
   comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
 });
 
