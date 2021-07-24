@@ -159,14 +159,10 @@ const isLoggedIn = (req, res, next) => {
 };
 
 router.get("/profile", isLoggedIn, (req, res, next) => {
-  console.log("hello");
-  console.log(req.session.loggedInUser._id);
-  UserModel.findById(req.session.loggedInUser._id).populate("comments");
-  console
-    .log(req.session.loggedInUser)
+  UserModel.findById(req.session.loggedInUser._id)
+    .populate("comments")
     .then(() => {
-      res.status(200).json(req.session.loggedInUser);
-      console.log(req.session.loggedInUser.comments);
+      res.status(200).json(response);
     })
     .catch((err) => {
       console.log(err);

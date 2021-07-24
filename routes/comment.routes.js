@@ -37,9 +37,7 @@ router.post("/comments/create", (req, res, next) => {
     author: author,
   }).then((response) => {
     res.status(200).json(response);
-    UserModel.findByIdAndUpdate(req.session.loggedInUser._id, {
-      $push: { comments: response._id },
-    })
+    UserModel.findByIdAndUpdate(req.session.loggedInUser._id, { comments: response._id})
       .then(() => {
         console.log("comment added to user");
       })
