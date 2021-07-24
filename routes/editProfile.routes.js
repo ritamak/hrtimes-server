@@ -5,7 +5,6 @@ const UserModel = require("../models/User.model");
 
 router.get("/:id/edit", (req, res) => {
   console.log(req.params);
-
   UserModel.findById(req.params.id)
     .then((response) => {
       console.log("router get for edit profile working");
