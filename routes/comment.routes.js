@@ -42,7 +42,6 @@ router.post("/article/:id/comments/create", (req, res, next) => {
         article: article
       })
       .then((comment) => {
-        console.log(comment);
         res.status(200).json(comment);
         UserModel.findByIdAndUpdate(req.session.loggedInUser._id, {
           $push: { comments: comment }
