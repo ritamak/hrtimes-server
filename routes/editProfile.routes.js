@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const UserModel = require("../models/User.model");
+const ArticleModel = require('../models/Article.model');
+const CommentModel = require('../models/Comment.model');
 
 router.patch("/:id/edit", (req, res) => {
   let id = req.params.id;
@@ -39,6 +41,33 @@ router.patch("/:id/edit", (req, res) => {
   )
     .then((response) => {
       res.status(200).json(response);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: "Something went wrong",
+        message: err,
+      });
+    });
+});
+
+router.delete('/:id', (req, res, next) => {
+  let { id } = req.params;
+
+  ArticleModel.find()
+    .populate('author')
+    .then(() => {
+      ArticleModel.deleteMany({ author: { _id: id } }).then(article => console.log(article)).catch(err => console.log(err));
+    }).catch(err => console.log(err));
+  CommentModel.find()
+    .populate('author')
+    .then(() => {
+      CommentModel.deleteMany({ author: { _id: id } }).then(comment => console.log(comment)).catch(err => console.log(err));
+    }).catch(err => console.log(err));
+
+  UserModel.findOneAndRemove(id)
+    .then((response) => {
+      req.session.destroy();
+      res.status(200).json(response);     
     })
     .catch((err) => {
       res.status(500).json({
