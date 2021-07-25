@@ -2,8 +2,14 @@ const { Schema, model } = require("mongoose");
 
 const commentSchema = new Schema({
   commentBody: String,
-  authorId: String,
-  author: String,
+  article: {
+    type: Schema.Types.ObjectId,
+    ref: "Article"
+  },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User"
+  }
 });
 
 const Comment = model("Comment", commentSchema);

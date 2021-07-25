@@ -23,9 +23,13 @@ const articleSchema = new Schema({
     required: true,
   },
   author: {
-    type: String,
-    required: true,
+    type: Schema.Types.ObjectId,
+    ref: "User"
   },
+  comments: [{
+    type: Schema.Types.ObjectId,
+    ref: "Comment"
+  }],
 });
 
 const Article = model("Article", articleSchema);
