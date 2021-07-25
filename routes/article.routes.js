@@ -17,6 +17,8 @@ router.get("/articles", (req, res) => {
 
 router.get("/article/:id", (req, res) => {
   ArticleModel.findById(req.params.id)
+    .populate('author')
+    .populate('comments')
     .then((response) => {
       res.status(200).json(response);
     })
@@ -29,14 +31,14 @@ router.get("/article/:id", (req, res) => {
 });
 
 router.post("/create", (req, res, next) => {
-  const { section, subsection, title, body, created_date, author } = req.body;
+  const { section, subsection, title, body, created_date } = req.body;
   ArticleModel.create({
     section: section,
     subsection: subsection,
     title: title,
     body: body,
     created_date: created_date,
-    author: author,
+    author: req.session.loggedInUser
   }).then((response) => {
     res.status(200).json(response);
     UserModel.findByIdAndUpdate(req.session.loggedInUser._id, {
@@ -53,19 +55,6 @@ router.post("/create", (req, res, next) => {
 
 router.delete("/article/:id", (req, res) => {
   ArticleModel.findByIdAndDelete(req.params.id)
-    .then((response) => {
-      res.status(200).json(response);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        error: "Something went wrong",
-        message: err,
-      });
-    });
-});
-
-router.get("/article/:id", (req, res) => {
-  ArticleModel.findById(req.params.id)
     .then((response) => {
       res.status(200).json(response);
     })

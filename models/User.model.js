@@ -36,8 +36,14 @@ const userSchema = new Schema({
     type: Array,
     required: true,
   },
-  articles: [{ type: Schema.Types.ObjectId, ref: "Article" }],
-  comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
+  articles: [{
+    type: Schema.Types.ObjectId,
+    ref: "Article"
+  }],
+  comments: [{
+    type: Schema.Types.ObjectId,
+    ref: "Comment"
+  }],
 });
 
 const User = model("User", userSchema);

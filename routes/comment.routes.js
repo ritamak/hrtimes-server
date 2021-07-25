@@ -1,12 +1,12 @@
 const router = require("express").Router();
 const CommentModel = require("../models/Comment.model");
 const UserModel = require("../models/User.model");
+const ArticleModel = require("../models/Article.model");
 
 router.get("/comments", (req, res) => {
   CommentModel.find()
     .then((comments) => {
       res.status(200).json(comments);
-      console.log("get for comments works");
     })
     .catch((err) => {
       res.status(500).json({
@@ -18,8 +18,10 @@ router.get("/comments", (req, res) => {
 
 router.get("/comments/:id", (req, res) => {
   CommentModel.findById(req.params.id)
+    .populate('author')
     .then((response) => {
       res.status(200).json(response);
+      console.log(response);
     })
     .catch((err) => {
       res.status(500).json({
@@ -29,24 +31,30 @@ router.get("/comments/:id", (req, res) => {
     });
 });
 
-router.post("/comments/create", (req, res, next) => {
-  const { commentBody, authorId, author } = req.body;
-  CommentModel.create({
-    commentBody: commentBody,
-    authorId: authorId,
-    author: author,
-  }).then((response) => {
-    res.status(200).json(response);
-    UserModel.findByIdAndUpdate(req.session.loggedInUser._id, {
-      comments: response._id,
-    })
-      .then(() => {
-        console.log("comment added to user");
+router.post("/article/:id/comments/create", (req, res, next) => {
+  const { id } = req.params;
+  const { commentBody } = req.body;
+  ArticleModel.findById(id)
+    .then((article) => {
+      CommentModel.create({
+        commentBody: commentBody,
+        author: req.session.loggedInUser,
+        article: article
+      })
+      .then((comment) => {
+        console.log(comment);
+        res.status(200).json(comment);
+        UserModel.findByIdAndUpdate(req.session.loggedInUser._id, {
+          $push: { comments: comment }
+        }).then(response => console.log(response)).catch(err => console.log(err))
+        ArticleModel.findByIdAndUpdate(id, {
+          $push: { comments: comment }
+        }).then(response => console.log(response)).catch(err => console.log(err))
       })
       .catch((err) => {
-        console.log(err);
-      });
-  });
+        console.log('Comment create failed!', err);
+      })
+    })
 });
 
 router.delete("/comments/:id", (req, res) => {
