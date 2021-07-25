@@ -20,6 +20,7 @@ router.get("/article/:id", (req, res) => {
     .populate('author')
     .populate('comments')
     .then((response) => {
+      console.log(response)
       res.status(200).json(response);
     })
     .catch((err) => {
