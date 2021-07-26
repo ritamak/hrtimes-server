@@ -19,14 +19,26 @@ router.get("/comments", (req, res) => {
 router.get("/comments/:id", (req, res) => {
   CommentModel.findById(req.params.id)
     .populate('author')
-    .then((response) => {
-      res.status(200).json(response);
+    .then((comment) => {
+      res.status(200).json(comment);
     })
     .catch((err) => {
       res.status(500).json({
         error: "Something went wrong",
         message: err,
       });
+    });
+});
+
+router.get("/article/:id/comments", (req, res, next) => {
+  const { id } = req.params;
+  CommentModel.find({ article: { _id: id } })
+    .populate('article')
+    .populate('author')
+    .then((comments) => {
+      res.status(200).json(comments);
+    }).catch((err) => {
+      console.log('Comments not found!', err)
     });
 });
 

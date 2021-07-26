@@ -4,7 +4,10 @@ const UserModel = require("../models/User.model");
 
 router.get("/articles", (req, res) => {
   ArticleModel.find()
+    .populate('author')
+    .populate('comments')
     .then((articles) => {
+      console.log(articles);
       res.status(200).json(articles);
     })
     .catch((err) => {

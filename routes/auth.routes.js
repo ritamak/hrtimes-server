@@ -76,6 +76,7 @@ router.post("/signup", (req, res) => {
   })
     .then((user) => {
       user.passwordHash = "***";
+      req.session.loggedInUser = user;
       res.status(200).json(user);
     })
     .catch((err) => {
