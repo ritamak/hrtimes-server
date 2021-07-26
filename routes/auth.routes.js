@@ -82,7 +82,7 @@ router.post("/signup", (req, res) => {
     .catch((err) => {
       if (err.code === 11000) {
         res.status(500).json({
-          errorMessage: "username or email entered already exists!",
+          errorMessage: "Username or email entered already exists!",
           message: err,
         });
       } else {
@@ -98,7 +98,7 @@ router.post("/signin", (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     res.status(500).json({
-      error: "Please enter Username. email and password",
+      error: "Please enter username. email and password",
     });
     return;
   }
@@ -108,7 +108,7 @@ router.post("/signin", (req, res) => {
   // );
   // if (!myRegex.test(email)) {
   //   res.status(500).json({
-  //     error: "Email format not correct",
+  //     error: "Please enter a correct email format",
   //   });
   //   return;
   // }
@@ -124,14 +124,14 @@ router.post("/signin", (req, res) => {
             res.status(200).json(userData);
           } else {
             res.status(500).json({
-              error: "Passwords don't match",
+              error: "Invalid password",
             });
             return;
           }
         })
         .catch(() => {
           res.status(500).json({
-            error: "Email format not correct",
+            error: "Invalid email",
           });
           return;
         });
