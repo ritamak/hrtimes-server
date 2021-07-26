@@ -15,7 +15,6 @@ const articleSchema = new Schema({
   },
   body: {
     type: String,
-    unique: true,
     required: true,
   },
   created_date: {
@@ -24,12 +23,14 @@ const articleSchema = new Schema({
   },
   author: {
     type: Schema.Types.ObjectId,
-    ref: "User"
+    ref: "User",
   },
-  comments: [{
-    type: Schema.Types.ObjectId,
-    ref: "Comment"
-  }],
+  comments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Comment",
+    },
+  ],
 });
 
 const Article = model("Article", articleSchema);
