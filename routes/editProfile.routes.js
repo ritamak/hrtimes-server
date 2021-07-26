@@ -55,14 +55,15 @@ router.delete('/:id', (req, res, next) => {
 
   ArticleModel.find()
     .populate('author')
-    .then(() => {
-      ArticleModel.deleteMany({ author: { _id: id } }).then(article => console.log(article)).catch(err => console.log(err));
-    }).catch(err => console.log(err));
+    .deleteMany({ author: { _id: id } })
+    .then(response => console.log(response))
+    .catch(err => console.log(err));
+
   CommentModel.find()
     .populate('author')
-    .then(() => {
-      CommentModel.deleteMany({ author: { _id: id } }).then(comment => console.log(comment)).catch(err => console.log(err));
-    }).catch(err => console.log(err));
+    .deleteMany({ author: { _id: id } })
+    .then(response => console.log(response))
+    .catch(err => console.log(err));
 
   UserModel.findOneAndRemove(id)
     .then((response) => {

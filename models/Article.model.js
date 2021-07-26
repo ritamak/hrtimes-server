@@ -15,7 +15,6 @@ const articleSchema = new Schema({
   },
   body: {
     type: String,
-    unique: true,
     required: true,
   },
   created_date: {

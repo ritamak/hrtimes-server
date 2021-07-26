@@ -5,6 +5,8 @@ const ArticleModel = require("../models/Article.model");
 
 router.get("/comments", (req, res) => {
   CommentModel.find()
+    .populate('author')
+    .populate('article')
     .then((comments) => {
       res.status(200).json(comments);
     })
@@ -49,17 +51,16 @@ router.post("/article/:id/comments/create", (req, res, next) => {
     .then((article) => {
       CommentModel.create({
         commentBody: commentBody,
-        author: req.session.loggedInUser,
-        article: article
       })
-      .then((comment) => {
+        .then(async (comment) => {
+        console.log(comment)
+        await  UserModel.findByIdAndUpdate(req.session.loggedInUser._id, {
+          $push: { comments: comment._id }
+        })
+        await ArticleModel.findByIdAndUpdate(id, {
+          $push: { comments: comment._id }
+        })
         res.status(200).json(comment);
-        UserModel.findByIdAndUpdate(req.session.loggedInUser._id, {
-          $push: { comments: comment }
-        }).then(response => console.log(response)).catch(err => console.log(err))
-        ArticleModel.findByIdAndUpdate(id, {
-          $push: { comments: comment }
-        }).then(response => console.log(response)).catch(err => console.log(err))
       })
       .catch((err) => {
         console.log('Comment create failed!', err);
