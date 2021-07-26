@@ -60,7 +60,6 @@ router.delete('/:id', (req, res, next) => {
     .catch(err => console.log(err));
 
   CommentModel.find()
-    .populate('author')
     .deleteMany({ author: { _id: id } })
     .then(response => console.log(response))
     .catch(err => console.log(err));

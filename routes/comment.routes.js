@@ -5,8 +5,6 @@ const ArticleModel = require("../models/Article.model");
 
 router.get("/comments", (req, res) => {
   CommentModel.find()
-    .populate('author')
-    .populate('article')
     .then((comments) => {
       res.status(200).json(comments);
     })
@@ -20,7 +18,6 @@ router.get("/comments", (req, res) => {
 
 router.get("/comments/:id", (req, res) => {
   CommentModel.findById(req.params.id)
-    .populate('author')
     .then((comment) => {
       res.status(200).json(comment);
     })
@@ -35,8 +32,8 @@ router.get("/comments/:id", (req, res) => {
 router.get("/article/:id/comments", (req, res, next) => {
   const { id } = req.params;
   CommentModel.find({ article: { _id: id } })
-    .populate('article')
     .populate('author')
+    .populate('article')
     .then((comments) => {
       res.status(200).json(comments);
     }).catch((err) => {
@@ -48,12 +45,13 @@ router.post("/article/:id/comments/create", (req, res, next) => {
   const { id } = req.params;
   const { commentBody } = req.body;
   ArticleModel.findById(id)
-    .then((article) => {
+    .then(() => {
       CommentModel.create({
         commentBody: commentBody,
+        author: req.session.loggedInUser._id,
+        article: id
       })
         .then(async (comment) => {
-        console.log(comment)
         await  UserModel.findByIdAndUpdate(req.session.loggedInUser._id, {
           $push: { comments: comment._id }
         })
@@ -69,15 +67,27 @@ router.post("/article/:id/comments/create", (req, res, next) => {
 });
 
 router.delete("/comments/:id", (req, res) => {
-  CommentModel.findByIdAndDelete(req.params.id)
-    .then((response) => {
-      res.status(200).json(response);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        error: "Something went wrong",
-        message: err,
-      });
+  const { id } = req.params;
+  const { _id } = req.session.loggedInUser
+
+  CommentModel.findById(id)
+    .then(() => {
+      let myPromises = [];
+      myPromises.push(ArticleModel.findOneAndUpdate({ comments: { $in: [id] } }, { $pull: { comments:  id  } }))
+      myPromises.push(UserModel.findByIdAndUpdate((_id), { $pull: { comments: id} }))
+      myPromises.push(CommentModel.findByIdAndDelete(id))
+      Promise.all(myPromises)
+        .then((response) => {
+          res.status(200).json(response);
+        })
+        .catch((err) => {
+          res.status(500).json({
+            error: "Something went wrong",
+            message: err,
+          });
+        });
+    }).catch((err) => {
+      
     });
 });
 
