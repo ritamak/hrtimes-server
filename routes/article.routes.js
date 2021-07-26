@@ -20,10 +20,6 @@ router.get("/articles", (req, res) => {
 
 router.get("/article/:id", (req, res) => {
   const { id } = req.params;
-  UserModel.find()
-    .populate('articles')
-    .populate('comments')
-    .find({ comments: { article: { _id: id } } }).then(response => console.log(response)).catch(err => console.log(err));
   
   ArticleModel.findById(id)
     .populate('author')
@@ -70,7 +66,6 @@ router.delete("/article/:id", (req, res) => {
   ArticleModel.findById(id)
     .then((article) => {
       articleComments = article.comments;
-      console.log(article.comments);
 
       let myPromises = [];
       articleComments.forEach((comment) => {
@@ -89,31 +84,6 @@ router.delete("/article/:id", (req, res) => {
     }).catch((err) => {
       console.log(err);
     });
-
-  // UserModel.find()
-  //   .populate('articles')
-  //   .populate('comments')
-  //   .updateMany({ comments: [ article: { _id: id } ] }, { $pull: { comments: { article: { _id: id } } } }, {multi: true})
-  //   .findByIdAndUpdate(_id, { $pull: { articles: { _id: id } } })
-  //   .then(response => console.log(response))
-  //   .catch(err => console.log(err));
-
-  // CommentModel.find()
-  //   .populate('article')
-  //   .deleteMany({ article: { _id: id } })
-  //   .then(response => console.log(response))
-  //   .catch(err => console.log(err));
-  
-  // ArticleModel.findByIdAndDelete(id)
-  //   .then((response) => {
-  //     res.status(200).json(response);
-  //   })
-  //   .catch((err) => {
-  //     res.status(500).json({
-  //       error: "Something went wrong",
-  //       message: err,
-  //     });
-  // });
 });
 
 router.patch("/article/:id/edit", (req, res) => {
