@@ -5,8 +5,8 @@ const CommentModel = require("../models/Comment.model");
 
 router.get("/articles", (req, res) => {
   ArticleModel.find()
-    .populate('author')
-    .populate('comments')
+    .populate("author")
+    .populate("comments")
     .then((articles) => {
       res.status(200).json(articles);
     })
@@ -20,10 +20,10 @@ router.get("/articles", (req, res) => {
 
 router.get("/article/:id", (req, res) => {
   const { id } = req.params;
-  
+
   ArticleModel.findById(id)
-    .populate('author')
-    .populate('comments')
+    .populate("author")
+    .populate("comments")
     .then((response) => {
       res.status(200).json(response);
     })
@@ -36,14 +36,15 @@ router.get("/article/:id", (req, res) => {
 });
 
 router.post("/create", (req, res, next) => {
-  const { section, subsection, title, body, created_date } = req.body;
+  const { section, subsection, title, body, created_date, image } = req.body;
   ArticleModel.create({
     section: section,
     subsection: subsection,
     title: title,
     body: body,
     created_date: created_date,
-    author: req.session.loggedInUser
+    author: req.session.loggedInUser,
+    image: image,
   }).then((response) => {
     res.status(200).json(response);
     UserModel.findByIdAndUpdate(req.session.loggedInUser._id, {
@@ -69,19 +70,28 @@ router.delete("/article/:id", (req, res) => {
 
       let myPromises = [];
       articleComments.forEach((comment) => {
-        myPromises.push(UserModel.findOneAndUpdate({ comments: { $in: [comment] } }, { $pull: { comments: comment } }))
-        myPromises.push(CommentModel.findByIdAndDelete(comment._id))
-      })
-      myPromises.push(ArticleModel.findByIdAndDelete(id))
-      myPromises.push(UserModel.findByIdAndUpdate((_id), { $pull: { articles: { $in: [ id ] } } }))
-      
+        myPromises.push(
+          UserModel.findOneAndUpdate(
+            { comments: { $in: [comment] } },
+            { $pull: { comments: comment } }
+          )
+        );
+        myPromises.push(CommentModel.findByIdAndDelete(comment._id));
+      });
+      myPromises.push(ArticleModel.findByIdAndDelete(id));
+      myPromises.push(
+        UserModel.findByIdAndUpdate(_id, { $pull: { articles: { $in: [id] } } })
+      );
+
       Promise.all(myPromises)
         .then(() => {
-          res.status(200).json({})
-      }).catch((err) => {
-        console.log(err)
-      });
-    }).catch((err) => {
+          res.status(200).json({});
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+    .catch((err) => {
       console.log(err);
     });
 });

@@ -31,6 +31,7 @@ const articleSchema = new Schema({
       ref: "Comment",
     },
   ],
+  image: String,
 });
 
 const Article = model("Article", articleSchema);
