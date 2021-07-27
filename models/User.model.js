@@ -44,6 +44,10 @@ const userSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Comment"
   }],
+  following: [{
+    type: Schema.Types.ObjectId,
+    ref: "User"
+  }]
 });
 
 const User = model("User", userSchema);
