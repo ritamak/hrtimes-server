@@ -98,10 +98,10 @@ router.delete("/article/:id", (req, res) => {
 
 router.patch("/article/:id/edit", (req, res) => {
   let id = req.params.id;
-  const { section, subsection, title, body, created_date, author } = req.body;
+  const { section, subsection, title, body, created_date } = req.body;
   ArticleModel.findByIdAndUpdate(
     id,
-    { $set: { section, subsection, title, body, created_date, author } },
+    { $set: { section, subsection, title, body, created_date } },
     { new: true }
   )
     .then((response) => {
