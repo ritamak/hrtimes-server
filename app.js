@@ -39,6 +39,9 @@ app.use("/api", articleRoutes);
 const commentRoutes = require("./routes/comment.routes");
 app.use("/api", commentRoutes);
 
+const usersRoutes = require("./routes/users.routes");
+app.user("/", usersRoutes);
+
 const fileUploadRoutes = require("./routes/file-upload.routes");
 app.use("/api", fileUploadRoutes);
 
