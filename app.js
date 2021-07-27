@@ -30,6 +30,9 @@ app.use("/api", authRoutes);
 const fetchRoutes = require("./routes/news.routes");
 app.use("/api", fetchRoutes);
 
+const usersRoutes = require("./routes/users.routes");
+app.use("/api", usersRoutes);
+
 const profileRoutes = require("./routes/editProfile.routes");
 app.use("/api", profileRoutes);
 
@@ -38,9 +41,6 @@ app.use("/api", articleRoutes);
 
 const commentRoutes = require("./routes/comment.routes");
 app.use("/api", commentRoutes);
-
-const usersRoutes = require("./routes/users.routes");
-app.user("/", usersRoutes);
 
 const fileUploadRoutes = require("./routes/file-upload.routes");
 app.use("/api", fileUploadRoutes);

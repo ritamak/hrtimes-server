@@ -27,7 +27,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  image: String,
+  image: {
+    type: String,
+    default: "/media/user.png"
+  },
   passwordHash: {
     type: String,
     required: true,
