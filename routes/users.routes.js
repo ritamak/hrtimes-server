@@ -7,7 +7,6 @@ const CommentModel = require('../models/Comment.model');
 router.get("/users/:id", (req, res, next) => {
   const { id } = req.params;
   const { _id } = req.session.loggedInUser;
-  console.log(req.session);
 
   UserModel.findById(id)
     .populate('comments')
@@ -26,15 +25,14 @@ router.get("/users/:id", (req, res, next) => {
 
 router.post("/users/:id", (req, res, next) => {
   const { id } = req.params;
-  // const { _id } = req.session.loggedInUser;
-  console.log(req.session);
-//   UserModel.findByIdAndUpdate(_id, {$push: {following: id}})
-//     .then((user) => {
-//       res.status(200).json(user);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
+  const { _id } = req.session.loggedInUser;
+  UserModel.findByIdAndUpdate(_id, {$push: {following: id}}, {new: true})
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 module.exports = router;
