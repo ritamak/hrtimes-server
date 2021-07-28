@@ -29,7 +29,7 @@ const userSchema = new Schema({
   },
   image: {
     type: String,
-    default: "/media/user.png"
+    default: "/media/user.png",
   },
   passwordHash: {
     type: String,
@@ -39,18 +39,24 @@ const userSchema = new Schema({
     type: Array,
     required: true,
   },
-  articles: [{
-    type: Schema.Types.ObjectId,
-    ref: "Article"
-  }],
-  comments: [{
-    type: Schema.Types.ObjectId,
-    ref: "Comment"
-  }],
-  following: [{
-    type: Schema.Types.ObjectId,
-    ref: "User"
-  }]
+  articles: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Article",
+    },
+  ],
+  comments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Comment",
+    },
+  ],
+  following: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
 const User = model("User", userSchema);
