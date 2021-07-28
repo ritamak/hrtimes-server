@@ -13,7 +13,6 @@ router.get("/users/:id", (req, res, next) => {
     .populate("articles")
     .populate("following")
     .then((user) => {
-      console.log(user);
       res.status(200).json(user);
     })
     .catch((err) => {
@@ -27,9 +26,7 @@ router.get("/users/:id", (req, res, next) => {
 router.post("/users/:id", (req, res, next) => {
   const { id } = req.params;
   const { _id } = req.session.loggedInUser;
-  console.log("this is loggedInUser", req.session.loggedInUser);
-  console.log("this is the user to follow", req.params);
-  UserModel.findByIdAndUpdate(_id, { $push: { following: id } })
+  UserModel.findByIdAndUpdate(_id, { $push: { following: id } }, { new: true })
     .then((user) => {
       res.status(200).json(user);
       console.log("it works!");

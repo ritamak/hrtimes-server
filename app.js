@@ -35,9 +35,6 @@ app.use("/api", authRoutes);
 const fetchRoutes = require("./routes/news.routes");
 app.use("/api", fetchRoutes);
 
-const usersRoutes = require("./routes/users.routes");
-app.use("/api", usersRoutes);
-
 const profileRoutes = require("./routes/editProfile.routes");
 app.use("/api", profileRoutes);
 
@@ -50,7 +47,9 @@ app.use("/api", commentRoutes);
 const fileUploadRoutes = require("./routes/file-upload.routes");
 app.use("/api", fileUploadRoutes);
 
-// ALSO FOR deployment
+const usersRoutes = require("./routes/users.routes");
+app.use("/api", usersRoutes);
+
 app.use((req, res, next) => {
   // If no routes match, send them the React HTML.
   res.sendFile(__dirname + "/public/index.html");
