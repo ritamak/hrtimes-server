@@ -21,6 +21,11 @@ app.use(
   })
 );
 
+// config for deployment
+// public we can call whatever the folder name is
+const path = require("path");
+app.use(express.static(path.join(__dirname, "public")));
+
 const allRoutes = require("./routes");
 app.use("/api", allRoutes);
 
@@ -44,6 +49,12 @@ app.use("/api", commentRoutes);
 
 const fileUploadRoutes = require("./routes/file-upload.routes");
 app.use("/api", fileUploadRoutes);
+
+// ALSO FOR deployment
+app.use((req, res, next) => {
+  // If no routes match, send them the React HTML.
+  res.sendFile(__dirname + "/public/index.html");
+});
 
 require("./error-handling")(app);
 
