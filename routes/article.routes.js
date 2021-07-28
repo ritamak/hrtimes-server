@@ -98,22 +98,30 @@ router.delete("/article/:id", (req, res) => {
 
 router.patch("/article/:id/edit", (req, res) => {
   let id = req.params.id;
-  const { section, subsection, title, body, created_date } = req.body;
-  ArticleModel.findByIdAndUpdate(
-    id,
-    { $set: { section, subsection, title, body, created_date } },
-    { new: true }
-  )
-    .then((response) => {
-      res.status(200).json(response);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({
-        error: "Something went wrong",
-        message: err,
+  let { section, subsection, title, body, created_date, image } = req.body;
+  console.log(req.body);
+  if (!image) {
+    ArticleModel.findById(id)
+      .then((result) => {
+        image = result.image;
+        console.log(image);
+        ArticleModel.findByIdAndUpdate(
+          id,
+          { $set: { section, subsection, title, body, created_date, image } },
+          { new: true }
+        );
+      })
+      .then((response) => {
+        res.status(200).json(response);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({
+          error: "Something went wrong",
+          message: err,
+        });
       });
-    });
+  }
 });
 
 module.exports = router;
