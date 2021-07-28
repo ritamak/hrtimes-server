@@ -2,12 +2,12 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const UserModel = require("../models/User.model");
-const ArticleModel = require('../models/Article.model');
-const CommentModel = require('../models/Comment.model');
+const ArticleModel = require("../models/Article.model");
+const CommentModel = require("../models/Comment.model");
 
 router.patch("/:id/edit", (req, res) => {
   let id = req.params.id;
-  const {
+  let {
     username,
     firstName,
     lastName,
@@ -18,6 +18,10 @@ router.patch("/:id/edit", (req, res) => {
     passwordHash,
     interests,
   } = req.body;
+
+  if (!image) {
+    image = req.session.loggedInUser.image;
+  }
 
   let salt = bcrypt.genSaltSync(10);
   let hash = bcrypt.hashSync(passwordHash, salt);
@@ -50,24 +54,24 @@ router.patch("/:id/edit", (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res, next) => {
+router.delete("/:id", (req, res, next) => {
   let { id } = req.params;
 
   ArticleModel.find()
-    .populate('author')
+    .populate("author")
     .deleteMany({ author: { _id: id } })
-    .then(response => console.log(response))
-    .catch(err => console.log(err));
+    .then((response) => console.log(response))
+    .catch((err) => console.log(err));
 
   CommentModel.find()
     .deleteMany({ author: { _id: id } })
-    .then(response => console.log(response))
-    .catch(err => console.log(err));
+    .then((response) => console.log(response))
+    .catch((err) => console.log(err));
 
   UserModel.findOneAndRemove(id)
     .then((response) => {
       req.session.destroy();
-      res.status(200).json(response);     
+      res.status(200).json(response);
     })
     .catch((err) => {
       res.status(500).json({
