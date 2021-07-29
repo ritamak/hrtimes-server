@@ -96,7 +96,7 @@ router.post("/signup", (req, res) => {
 
 router.post("/signin", (req, res) => {
   const { email, password } = req.body;
-
+  console.log(req.body);
   if (!email || !password) {
     res.status(500).json({
       error: "Please enter username. email and password",
