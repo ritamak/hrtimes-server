@@ -25,12 +25,22 @@ const articleSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  comments: [
-    {
+  comments: [{
+    type: Schema.Types.ObjectId,
+    ref: "Comment",
+  }],
+  likes: [{
       type: Schema.Types.ObjectId,
-      ref: "Comment",
-    },
-  ],
+      ref: "User"
+  }],
+  dislikes: [{
+      type: Schema.Types.ObjectId,
+      ref: "User"
+  }],
+  favorites: [{
+      type: Schema.Types.ObjectId,
+      ref: "User"
+  }],
   image: String,
 });
 
