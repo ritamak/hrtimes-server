@@ -57,6 +57,7 @@ const userSchema = new Schema({
       ref: "User",
     },
   ],
+  googleId: String,
 });
 
 const User = model("User", userSchema);
