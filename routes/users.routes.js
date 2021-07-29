@@ -25,7 +25,9 @@ router.post("/users/:id/follow", (req, res, next) => {
   const { id } = req.params;
   const { _id } = req.session.loggedInUser;
   UserModel.findByIdAndUpdate(_id, { $push: { following: id } }, { new: true })
+    .populate('following')
     .then((user) => {
+      req.session.loggedInUser = user;
       res.status(200).json(user);
     })
     .catch((err) => {
@@ -37,7 +39,9 @@ router.post("/users/:id/unfollow", (req, res, next) => {
   const { id } = req.params;
   const { _id } = req.session.loggedInUser;
   UserModel.findByIdAndUpdate(_id, { $pull: { following: id } }, { new: true })
+    .populate('following')
     .then((user) => {
+      req.session.loggedInUser = user;
       res.status(200).json(user);
     })
     .catch((err) => {

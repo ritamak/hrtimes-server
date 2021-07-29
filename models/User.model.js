@@ -23,7 +23,7 @@ const userSchema = new Schema({
   },
   image: {
     type: String,
-    default: "/+media/user.png",
+    default: "../public/media/user.png",
   },
   passwordHash: {
     type: String,
