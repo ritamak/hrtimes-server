@@ -54,7 +54,7 @@ const likesRoutes = require("./routes/likes.routes");
 app.use("/api", likesRoutes);
 
 const googleRoutes = require("./routes/google.routes");
-app.use("api", googleRoutes);
+app.use("/api", googleRoutes);
 
 app.use((req, res, next) => {
   // If no routes match, send them the React HTML.

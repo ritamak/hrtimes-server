@@ -2,12 +2,14 @@ const router = require("express").Router();
 const UserModel = require("../models/User.model");
 
 router.post("/google/info", (req, res, next) => {
-  const { firstName, lastName, email, image, googleId } = req.body;
+  const { username, firstName, lastName, email, image, googleId } = req.body;
+  console.log("getting to google info");
   try {
     UserModel.find({ email: email })
       .then((result) => {
         if (result.length == 0) {
           UserModel.create({
+            username: firstName,
             firstName,
             lastName,
             googleId,
@@ -15,6 +17,7 @@ router.post("/google/info", (req, res, next) => {
             email,
           }).then((response) => {
             req.session.loggedInUser = response;
+            console.log(response);
             res.status(200).json({ data: response });
           });
         } else {
