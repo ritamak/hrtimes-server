@@ -166,6 +166,7 @@ router.get("/profile", isLoggedIn, (req, res, next) => {
   UserModel.findById(req.session.loggedInUser._id)
     .populate("comments")
     .populate("articles")
+    .populate("following")
     .then((response) => {
       res.status(200).json(response);
     })
