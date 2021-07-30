@@ -99,7 +99,7 @@ router.post("/signin", (req, res) => {
   console.log(req.body);
   if (!email || !password) {
     res.status(500).json({
-      error: "Please enter username. email and password",
+      errorMessage: "Please enter username. email and password",
     });
     return;
   }
@@ -125,21 +125,21 @@ router.post("/signin", (req, res) => {
             res.status(200).json(userData);
           } else {
             res.status(500).json({
-              error: "Invalid password",
+              errorMessage: "Invalid password",
             });
             return;
           }
         })
         .catch(() => {
           res.status(500).json({
-            error: "Invalid email",
+            errorMessage: "Invalid email",
           });
           return;
         });
     })
     .catch((err) => {
       res.status(500).json({
-        error: "Email does not exist",
+        errorMessage: "Email does not exist",
         message: err,
       });
       return;
@@ -156,7 +156,7 @@ const isLoggedIn = (req, res, next) => {
     next();
   } else {
     res.status(401).json({
-      message: "Unauthorized user",
+      errorMessage: "Unauthorized user",
       code: 401,
     });
   }
